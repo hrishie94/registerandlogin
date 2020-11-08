@@ -90,39 +90,7 @@ input[type=submit] {
 	</div> 
     </div> 
     <script>
-        // function register(){
-            // const name = document.getElementById('name');
-            // const city = document.getElementById('city');
-            // const email = document.getElementById('email');
-            // const password = document.getElementById('password');
-            
-            // const data = {name,city,email,password}
-            // const myform = document.getElementById('myform')
-            // myform.addEventListener('submit',function(e){
-            //     e.preventDefault()
-            // })
-            
-//             const formData = new formData(this)
-//             const serchParams =new URLSearchParams()
-//             for(let pair of formData){
-//                 serchParams.append(pair[0],pair[1],pair[2],pair[3])
-//             }
-
-//             console.log(data,"++++++")
-//            fetch('http://localhost:5000/register',{
-
-//   method: 'POST', // or 'PUT'
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-//   body: JSON.stringify(serchParams),
-//            }).then(response => response.json())
-// .then(values => {
-//   console.log('Success:', values);
-// })
-// .catch((error) => {
-//   console.error('Error:', error);
-// });
+      
 function alertMessage(text){
 	alert(text)
 
@@ -149,11 +117,12 @@ fetch("http://localhost:5000/api/register",{
 .then(res2 =>{
 	let text;
 	if(res2.status === 200){
-       text = "Registration Successful"
+	   text = "Registration Successfull"
 	}else if(res2.status === 400){
 		text = res2.msg
 	}
 	alertMessage(text)
+	   window.location.href = "http://localhost:5000/api/login"
 }
 )
 })

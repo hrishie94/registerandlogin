@@ -13,28 +13,43 @@ const UserSchema = new mongoose.Schema({
     }
     }]
     })
+    UserSchema.pre('save', async function(next){
+        const user = this;
+        const salt = await bcrypt.genSalt(10) 
+        const password = await bcrypt.hash(user.password,salt) 
+           user.password = password    
+           next()              
+        })
 
-
-
-    UserSchema.statics.findbyCredentials = async(email,password)=>{
-        const user = await User.findOne({email})
-    if(!user){
-        throw new Error ("unable to login")
-        console.log(user,"+++++++")
-    
+        UserSchema.statics.findbyCredentials = async function(email,password){
+        try {
+           var user = await this.findOne({email})
+        if(!user){
+            throw{
+                status:400,
+                msg:"Incorrect email provided"
+            }
+            
+        }
+         const isMatch =  await bcrypt.compare(password,user.password)  
+         if(!isMatch){
+        throw{
+            status:400,
+            msg:"Incorrect password"
+        }     
     }
-    // const isMatch =  await bcrypt.compare(password,user.password)  
-    // console.log(user.password,"+++++++")
-    // if(!isMatch){
-    //     throw new Error("unable to get the pasword")
-    // }
+        
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+   
     return user
     } 
     
     
-   UserSchema.methods.genrateToken = async function(){
+    UserSchema.methods.genrateToken = async function(){
         const user = this
-        console.log(user)
         const token = jwt.sign({_id:user._id.toString()},'mytoken')
         user.tokens = user.tokens.concat({token})
        await user.save()
@@ -43,5 +58,5 @@ const UserSchema = new mongoose.Schema({
     }
     
 
-const User = mongoose.model('User',UserSchema)
-module.exports = User
+    const User = mongoose.model('User',UserSchema)
+    module.exports = User

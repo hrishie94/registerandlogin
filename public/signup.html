@@ -78,27 +78,13 @@ input[type=submit] {
 		</div> 
     </div> 
                 <script>
-					// data = {
-					// 	name:"hrishi",
-					// 	password:"hrishi"
-					// }
-                document.getElementById('submitDetails').onsubmit = (e)=>{
-                    e.preventDefault()
-                    
-                    // const url ="http://localhost:5000/login";
-                    const data = new URLSearchParams();
-                    for(const pair of  new FormData(e.target)){
-						data.append(pair[0],pair[1])
-					}
-					console.log(data)
-                  fetch("http://localhost:5000/api/login",{
-                        method:"post",
-                        body:data
-                    }).then(res=> res.json()
-                    ).then(res2 => console.log(res2))
-                    }
-                    
-                    document.getElementById('myform').addEventListener('submit',(e)=>{
+
+function alertMessage(text){
+	alert(text)
+
+}
+
+document.getElementById('Signup').addEventListener('submit',(e)=>{
 
 e.preventDefault()
 console.log(e.target)
@@ -109,15 +95,25 @@ for(const pair of  formData.keys()){
 	obj[pair]=formData.get(pair)
 }
 obj = JSON.stringify(obj)
-fetch("http://localhost:5000/api/register",{
+fetch("http://localhost:5000/api/login",{
     method:"post",
 	body:obj,
 	headers:{
 		'Content-type': 'application/json; charset=UTF-8'
 	}
 }).then(res=>res.json())
-.then(res2 => console.log(res2))
+.then(res2 =>{
+	let text;
+	if(res2.status === 200){
+       text = "login Successfull"
+	}else if(res2.status === 400){
+		text = res2.msg
+	}
+	alertMessage(text)
+}
+)
 })
+
                     </script>
                 
 

@@ -21,11 +21,14 @@ router.post('/register',async(req,res)=>{
 router.post('/login',async(req,res)=>{
     console.log(req.body)
     try {
-    const user = await User.findbyCredentials(req.body.email,req.body.passsword) 
+    const user = await User.findbyCredentials(req.body.email,req.body.password) 
     const token = await user.genrateToken()
-        res.send({user,token})  
+      return  res.status(200).send({status: 200,user:user,token})  
     } catch (error) {
-        res.status(400).send(error)
+        if(error.status){
+            return res.status(error.status).json(error)
+        }
+      return  res.status(503).send(error)
     } 
 })
 
