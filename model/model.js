@@ -34,6 +34,7 @@ const UserSchema = new mongoose.Schema({
     
    UserSchema.methods.genrateToken = async function(){
         const user = this
+        console.log(user)
         const token = jwt.sign({_id:user._id.toString()},'mytoken')
         user.tokens = user.tokens.concat({token})
        await user.save()

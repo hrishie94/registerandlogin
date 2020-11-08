@@ -8,8 +8,40 @@ href=
 integrity= 
 "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 crossorigin="anonymous"> 
-		
-<link rel="stylesheet" type="text/css" href="style.css"> 
+		<style>
+            .main{ 
+	padding:20px; 
+	font-family: 'Helvetica', serif; 
+	box-shadow: 5px 5px 7px 5px #888888; 
+	
+} 
+.main h1{ 
+	font-size: 40px; 
+	text-align:center; 
+	font-family: 'Helvetica', serif; 
+	
+} 
+input{ 
+	font-family: 'Helvetica', serif; 
+	width: 100%; 
+	font-size: 20px; 
+	padding: 12px 20px; 
+	margin: 8px 0; 
+	border: none; 
+	border-bottom: 2px solid #767474; 
+} 
+input[type=submit] { 
+	font-family: 'Helvetica', serif; 
+	width: 100%; 
+	background-color: #767474; 
+	border: none; 
+	color: white; 
+	padding: 16px 32px; 
+	margin: 4px 2px; 
+	border-radius: 10px; 
+} 
+
+        </style>
 </head> 
 	<body> 
 	<br> 
@@ -23,14 +55,73 @@ crossorigin="anonymous">
 		<div class="col-md-6 main"> 
 					
 			<h1> Signup Successful</h1> 
-					
+					<form id="Signup">
+                        <input class="box" type="email" name="email" id="email"
+			placeholder="E-Mail " required /><br> 
+							
+			<input class="box" type="password" name="password"
+			id="password" placeholder="Password " required/><br> 
+							
+						<br> 
+			<button type="submit" id="submitDetails"
+			name="submitDetails" value="Submit" >submit</button><br> 
+          
+            
+			</form> 
+			 <!-- <button type="submit" id="submitDetails"
+				name="submitDetails" value="Submit" />submit</button><br>  -->
 		</div> 
 				
 				
 		<div class="col-md-3"> 
 		</div> 
-				
 		</div> 
-	</div> 
+    </div> 
+                <script>
+					// data = {
+					// 	name:"hrishi",
+					// 	password:"hrishi"
+					// }
+                document.getElementById('submitDetails').onsubmit = (e)=>{
+                    e.preventDefault()
+                    
+                    // const url ="http://localhost:5000/login";
+                    const data = new URLSearchParams();
+                    for(const pair of  new FormData(e.target)){
+						data.append(pair[0],pair[1])
+					}
+					console.log(data)
+                  fetch("http://localhost:5000/api/login",{
+                        method:"post",
+                        body:data
+                    }).then(res=> res.json()
+                    ).then(res2 => console.log(res2))
+                    }
+                    
+                    document.getElementById('myform').addEventListener('submit',(e)=>{
+
+e.preventDefault()
+console.log(e.target)
+const data = new URLSearchParams();
+const formData = new FormData(e.target)
+let obj={}
+for(const pair of  formData.keys()){
+	obj[pair]=formData.get(pair)
+}
+obj = JSON.stringify(obj)
+fetch("http://localhost:5000/api/register",{
+    method:"post",
+	body:obj,
+	headers:{
+		'Content-type': 'application/json; charset=UTF-8'
+	}
+}).then(res=>res.json())
+.then(res2 => console.log(res2))
+})
+                    </script>
+                
+
+
+    </script>
 </body> 
 </html> 
